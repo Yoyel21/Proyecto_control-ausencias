@@ -57,6 +57,4 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store');
 });
 
-Route::get('/', [AbsenceController::class, 'index'])->name('home');
-
 require __DIR__.'/auth.php';
