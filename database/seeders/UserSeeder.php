@@ -21,5 +21,7 @@ class UserSeeder extends Seeder
             'department_id' => 1,
             'is_admin' => true,
         ]);
+
+        User::factory(5)->create();
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserImportController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AbsenceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -46,5 +47,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return redirect('/admin'); // Redirige al panel admin de Filament
     });
 });
+
+//Ruta de ausencias.
+Route::get('/absences', [AbsenceController::class, 'index'])->name('absences.index');
+
+//Middleware para proteger las rutas de ausencias.
+Route::middleware(['auth'])->group(function () {
+    Route::get('/absences/create', [AbsenceController::class, 'create'])->name('absences.create');
+    Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store');
+});
+
+Route::get('/', [AbsenceController::class, 'index'])->name('home');
 
 require __DIR__.'/auth.php';

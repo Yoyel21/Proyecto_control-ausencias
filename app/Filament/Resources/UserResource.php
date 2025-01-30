@@ -53,7 +53,7 @@ class UserResource extends Resource
                 ->rule(Password::default()),
 
             Select::make('is_admin')
-                ->label('Es Administrador?')
+                ->label('¿Es Administrador?')
                 ->options([
                     0 => 'No',
                     1 => 'Sí'

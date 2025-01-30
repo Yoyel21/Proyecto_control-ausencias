@@ -19,7 +19,7 @@
             <aside class="bg-white shadow-md w-full md:w-64 p-4 space-y-4">
                 <a href="#" class="block px-4 py-2 text-purple-700 hover:bg-purple-100 rounded">Dashboard</a>
                 <a href="#" class="block px-4 py-2 text-purple-700 hover:bg-purple-100 rounded">Gestión de Usuarios</a>
-                <a href="#" class="block px-4 py-2 text-purple-700 hover:bg-purple-100 rounded">Gestión de Ausencias</a>
+                <a href="absences" class="block px-4 py-2 text-purple-700 hover:bg-purple-100 rounded">Gestión de Ausencias</a>
             </aside>
 
             <!-- Panel principal -->
