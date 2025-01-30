@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserImportController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,5 +30,21 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/import-users', [UserImportController::class, 'importUsers'])->name('admin.import-users');
 });
 
+// Middleware para restringir acceso solo al admin
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/users', [AdminController::class, 'manageUsers'])->name('admin.users');
+    Route::get('/admin/users/create', [AdminController::class, 'createUser'])->name('admin.users.create');
+    Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
+    Route::get('/admin/upload-csv', [AdminController::class, 'uploadCsv'])->name('admin.uploadCsv');
+    Route::post('/admin/upload-csv', [AdminController::class, 'processCsv'])->name('admin.processCsv');
+});
+
+// Middleware para proteger las rutas de Filament
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/filament-dashboard', function () {
+        return redirect('/admin'); // Redirige al panel admin de Filament
+    });
+});
 
 require __DIR__.'/auth.php';
