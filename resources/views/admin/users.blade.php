@@ -1,6 +1,16 @@
-{{-- resources/views/admin/users.blade.php --}}
-@extends('layouts.AdminDashboardLayout')
+@extends('admin.dashboardLayout')
 
 @section('content')
-    <h2 class="text-2xl font-semibold mb-4">Gestión de Usuarios</h2>
+<div class="container">
+    <h2>Subir Usuarios desde CSV</h2>
+    <form action="{{ route('admin.import-users') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="csv_file" required>
+        <button type="submit">Subir</button>
+    </form>
+
+    @if (session('success'))
+        <p style="color: green;">{{ session('success') }}</p>
+    @endif
+</div>
 @endsection

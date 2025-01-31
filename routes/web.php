@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminAbsenceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,11 +45,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 // Middleware para proteger las rutas de Filament
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/filament-dashboard', function () {
-        return redirect('/admin'); // Redirige al panel admin de Filament
-    });
-});
+// Route::middleware(['auth', 'admin'])->group(function () {
+//     Route::get('/admin/filament-dashboard', function () {
+//         return redirect('/admin'); // Redirige al panel admin de Filament
+//     });
+// });
 
 //Ruta de ausencias.
 Route::get('/absences', [AbsenceController::class, 'index'])->name('absences.index');
@@ -60,10 +61,12 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //Middleware para las rutas del admin.
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/users', [UserController::class, 'index'])->name('users');
-    Route::get('/absences', [AbsenceController::class, 'index'])->name('absences');
+    Route::get('/adminAbsences', [AdminAbsenceController::class, 'index'])->name('adminAbsences');
 });
+
+
 
 require __DIR__.'/auth.php';

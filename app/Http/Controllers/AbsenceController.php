@@ -29,7 +29,7 @@ class AbsenceController extends Controller
         }
 
         $absence->update($request->validated());
-        return redirect()->route('admin.absences')->with('success', 'Ausencia actualizada.');
+        return redirect()->route('absences.index')->with('success', 'Ausencia actualizada.');
     }
 
     public function destroy(Absence $absence)
@@ -39,7 +39,7 @@ class AbsenceController extends Controller
         }
 
         $absence->delete();
-        return redirect()->route('admin.absences')->with('success', 'Ausencia eliminada.');
+        return redirect()->route('absences.index')->with('success', 'Ausencia eliminada.');
     }
 
     public function create()

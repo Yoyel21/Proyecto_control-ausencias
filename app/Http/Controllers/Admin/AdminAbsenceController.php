@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class AbsenceController extends Controller
+class AdminAbsenceController extends Controller
 {
     public function index()
     {
-        return view('admin.absences'); 
+        return view('admin.adminAbsences'); 
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.AdminDashboardLayout')
+@extends('admin.dashboardLayout')
 
 @section('content')
     <h2 class="text-2xl font-semibold mb-4">Bienvenido, Administrador</h2>
