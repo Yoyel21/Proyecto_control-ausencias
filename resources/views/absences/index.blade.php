@@ -58,4 +58,53 @@
         <p class="mt-4 text-gray-500">No hay ausencias registradas para esta hora.</p>
     @endif
 </div>
+
+
+<!--Estilo 3-->
+
+<div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-4">Registrar Ausencia</h2>
+    
+    <form method="POST" action="{{ route('absences.store') }}" class="bg-white p-6 rounded-lg shadow-md">
+        @csrf
+        
+        <div class="mb-4">
+            <label for="date" class="block text-gray-700">Fecha:</label>
+            <input type="date" id="date" name="date" class="w-full p-2 border rounded" required>
+        </div>
+        
+        <div class="mb-4">
+            <label for="hour" class="block text-gray-700">Hora:</label>
+            <select id="hour" name="hour" class="w-full p-2 border rounded" required>
+                {{-- @foreach ($hour as $horas)
+                    <option value="{{ $horas }}">{{ $horas }}</option>
+                @endforeach --}}
+            </select>
+        </div>
+        
+        <div class="mb-4">
+            <label for="comment" class="block text-gray-700">Motivo:</label>
+            <textarea id="comment" name="comment" class="w-full p-2 border rounded" required></textarea>
+        </div>
+        
+        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Registrar Ausencia</button>
+    </form>
+</div>
+
+<div class="container mx-auto p-6 mt-6">
+    <h2 class="text-2xl font-bold mb-4">Ausencias para la Hora Actual</h2>
+    
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <ul>
+            @forelse ($absences as $absence)
+                <li class="mb-2 p-4 border rounded">
+                    <strong>{{ $absence->user->name }}</strong> - {{ $absence->user->department->name }}
+                    <p class="text-gray-600">Motivo: {{ $absence->comment }}</p>
+                </li>
+            @empty
+                <p>No hay ausencias registradas en esta hora.</p>
+            @endforelse
+        </ul>
+    </div>
+</div>
 @endsection

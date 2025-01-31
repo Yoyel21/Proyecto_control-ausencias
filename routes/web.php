@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserImportController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AbsenceController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -55,6 +57,13 @@ Route::get('/absences', [AbsenceController::class, 'index'])->name('absences.ind
 Route::middleware(['auth'])->group(function () {
     Route::get('/absences/create', [AbsenceController::class, 'create'])->name('absences.create');
     Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store');
+});
+
+//Middleware para las rutas del admin.
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/absences', [AbsenceController::class, 'index'])->name('absences');
 });
 
 require __DIR__.'/auth.php';
