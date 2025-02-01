@@ -67,6 +67,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/adminAbsences', [AdminAbsenceController::class, 'index'])->name('adminAbsences');
 });
 
-
+Route::post('/admin/users/store', [UserController::class, 'store'])->name('admin.users.store');
+Route::post('/admin/users/upload-csv', [UserController::class, 'processCsv'])->name('admin.processCsv');
 
 require __DIR__.'/auth.php';

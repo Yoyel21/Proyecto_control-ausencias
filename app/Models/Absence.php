@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Enums\Hour;
 
 class Absence extends Model
 {
@@ -16,6 +17,10 @@ class Absence extends Model
         'date',
         'hour',
         'comment',
+    ];
+
+    protected $casts = [
+        'hour' => Hour::class,
     ];
 
     // Cada ausencia pertenece a un usuario

@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'department_id' => 1,
             'is_admin' => true,
+            'alias' => 'CONTROLLER',
         ]);
 
         User::factory(5)->create();

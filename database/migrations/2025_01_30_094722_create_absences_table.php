@@ -14,7 +14,29 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->date('date');
-            $table->enum('hour', ['1', '2', '3', '4', '5', '6', 'Recreo1', 'Recreo2']);
+            $table->enum('hour', [
+                '1manana',
+                '2manana',
+                '3manana',
+                'recreoM',
+                '4manana',
+                '5manana',
+                '6manana',
+                '1tarde',
+                '2tarde',
+                '3tarde',
+                'recreoT',
+                '4tarde',
+                '5tarde',
+                '6tarde',
+                '1tardeM',
+                '2tardeM',
+                '3tardeM',
+                'recreoTM',
+                '4tardeM',
+                '5tardeM',
+                '6tardeM'
+            ]);
             $table->text('comment')->nullable();
             $table->timestamps();
         });
