@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Hour;
 use App\Models\Absence;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -11,15 +12,59 @@ class AbsenceController extends Controller
 {
     public function index(Request $request)
     {
-        $date = $request->query('date', Carbon::now()->toDateString());
-        $hour = $request->query('hour', Carbon::now()->format('H:00'));
+        // Vista Diaria: usamos parámetros 'daily_date' y 'daily_hour'
+        $currentDate = $request->query('daily_date', Carbon::now()->toDateString());
+        // Valor por defecto: '1mañana'
+        $currentHour = $request->query('daily_hour', '1manana');
 
-        $absences = Absence::where('date', $date)
-            ->where('hour', $hour)
+        $dailyAbsences = Absence::where('date', $currentDate)
+            ->where('hour', $currentHour)
             ->with('user', 'department')
             ->get();
 
-        return view('absences.index', compact('absences', 'date', 'hour'));
+        // Vista Semanal: usamos parámetros 'weekly_date' y 'weekly_hour'
+        $selectedDate = $request->query('weekly_date', Carbon::now()->toDateString());
+        $selectedHour = $request->query('weekly_hour', '1mañana'); // Valor por defecto para la vista semanal
+        $weeklyAbsences = Absence::where('date', $selectedDate)
+            ->where('hour', $selectedHour)
+            ->with('user', 'department')
+            ->get();
+
+        $timeSlots = Hour::cases();
+
+        return view('absences.index', compact(
+            'currentDate',
+            'currentHour',
+            'dailyAbsences',
+            'selectedDate',
+            'selectedHour',
+            'weeklyAbsences',
+            'timeSlots'
+        ));
+    }
+
+    public function create()
+    {
+        return view('absences.create');
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'date' => 'required|date',
+            'hour' => 'required',
+            'comment' => 'nullable|string|max:255',
+        ]);
+
+        Absence::create([
+            'user_id' => Auth::id(),
+            'department_id' => Auth::user()->department_id,
+            'date' => $data['date'],
+            'hour' => $data['hour'],
+            'comment' => $data['comment'],
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Ausencia registrada con éxito.');
     }
 
     public function update(Request $request, Absence $absence)
@@ -28,7 +73,14 @@ class AbsenceController extends Controller
             return back()->with('error', 'No puedes editar una ausencia pasados 10 minutos.');
         }
 
-        $absence->update($request->validated());
+        $data = $request->validate([
+            'date' => 'required|date',
+            'hour' => 'required',
+            'comment' => 'nullable|string|max:255',
+        ]);
+
+        $absence->update($data);
+
         return redirect()->route('absences.index')->with('success', 'Ausencia actualizada.');
     }
 
@@ -39,30 +91,7 @@ class AbsenceController extends Controller
         }
 
         $absence->delete();
+
         return redirect()->route('absences.index')->with('success', 'Ausencia eliminada.');
-    }
-
-    public function create()
-    {
-        return view('absences.create');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'date' => 'required|date',
-            'hour' => 'required',
-            'comment' => 'nullable|string|max:255',
-        ]);
-
-        Absence::create([
-            'user_id' => Auth::id(),
-            'department_id' => Auth::user()->department_id,
-            'date' => $request->date,
-            'hour' => $request->hour,
-            'comment' => $request->comment,
-        ]);
-
-        return redirect()->route('dashboard')->with('success', 'Ausencia registrada con éxito.');
     }
 }

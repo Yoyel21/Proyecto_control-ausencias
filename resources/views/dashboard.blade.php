@@ -6,8 +6,7 @@
         @if (auth()->user()->is_admin)
             @include('admin.dashboardLayout')
         @else
-            <h2>Bienvenido a tu perfil</h2>
-            <p>Aquí puedes gestionar tu cuenta.</p>
+        @include('absences.index')
         @endif
     @endsection
 </x-app-layout>

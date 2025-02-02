@@ -20,13 +20,13 @@ enum Hour: string
     case H5_AFTERNOON = '5tarde';
     case H6_AFTERNOON = '6tarde';
 
-    case H1_TUESDAY = '1tardeM';
-    case H2_TUESDAY = '2tardeM';
-    case H3_TUESDAY = '3tardeM';
-    case BR_TUESDAY = 'recreoTM';
-    case H4_TUESDAY = '4tardeM';
-    case H5_TUESDAY = '5tardeM';
-    case H6_TUESDAY = '6tardeM';
+    case H1_TUESDAY = '1martes';
+    case H2_TUESDAY = '2martes';
+    case H3_TUESDAY = '3martes';
+    case BR_TUESDAY = 'recreomartes';
+    case H4_TUESDAY = '4martes';
+    case H5_TUESDAY = '5martes';
+    case H6_TUESDAY = '6martes';
 
     public function getSchedule(): string
     {
@@ -47,13 +47,13 @@ enum Hour: string
             self::H5_AFTERNOON => '18:10 - 19:05',
             self::H6_AFTERNOON => '19:05 - 20:00',
 
-            self::H1_TUESDAY => '15:00 - 15:50',
-            self::H2_TUESDAY => '15:50 - 16:40',
-            self::H3_TUESDAY => '16:40 - 17:30',
-            self::BR_TUESDAY => '17:30 - 18:00',
-            self::H4_TUESDAY => '18:00 - 18:50',
-            self::H5_TUESDAY => '18:50 - 19:40',
-            self::H6_TUESDAY => '19:40 - 20:00',
+            self::H1_TUESDAY => '15:00 - 15:45',
+            self::H2_TUESDAY => '15:45 - 16:30',
+            self::H3_TUESDAY => '16:30 - 17:15',
+            self::BR_TUESDAY => '17:15 - 17:45',
+            self::H4_TUESDAY => '17:45 - 18:30',
+            self::H5_TUESDAY => '18:30 - 19:15',
+            self::H6_TUESDAY => '19:15 - 20:00',
         };
     }
 }
