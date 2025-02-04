@@ -44,13 +44,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/upload-csv', [AdminController::class, 'processCsv'])->name('admin.processCsv');
 });
 
-// Middleware para proteger las rutas de Filament
-// Route::middleware(['auth', 'admin'])->group(function () {
-//     Route::get('/admin/filament-dashboard', function () {
-//         return redirect('/admin'); // Redirige al panel admin de Filament
-//     });
-// });
-
 //Ruta de ausencias.
 Route::get('/absences', [AbsenceController::class, 'index'])->name('absences.index');
 
@@ -74,4 +67,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/absences', [AbsenceController::class, 'index'])->name('absences.index');
 });
 
-require __DIR__.'/auth.php';
+Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store');
+
+Route::get('/absences/create', function () {
+    return view('absences.create');
+})->name('absences.create');
+
+Route::get('/absences/create', [AbsenceController::class, 'create'])->name('absences.create');
+
+Route::get('/ausencias', [AbsenceController::class, 'index'])->name('absences.index');
+
+Route::get('/ausencias', [AbsenceController::class, 'index'])->name('absences.index');
+
+Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store');
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/absences', [AbsenceController::class, 'index'])->name('absences.index');
+    Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store');
+});
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/absences', [AdminAbsenceController::class, 'index'])->name('absences.index');
+    Route::post('/absences', [AdminAbsenceController::class, 'store'])->name('absences.store');
+    Route::delete('/absences/{absence}', [AdminAbsenceController::class, 'destroy'])->name('absences.destroy');
+});
+
+
+require __DIR__ . '/auth.php';

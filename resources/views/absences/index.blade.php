@@ -2,6 +2,12 @@
 
 @section('content')
     <div class="max-w-5xl mx-auto p-6" x-data="{ view: 'daily' }">
+        <div class="flex justify-end mb-4">
+            <a href="{{ route('absences.create') }}"
+                class="bg-purple-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-purple-700 transition">
+                Registrar Nueva Ausencia
+            </a>
+        </div>
         <!-- Botones para cambiar entre vista diaria y semanal -->
         <div class="flex justify-center gap-4 mb-6">
             <button x-on:click="view = 'daily'"

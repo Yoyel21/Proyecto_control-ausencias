@@ -1,31 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-lg mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold mb-4">Registrar Ausencia</h2>
+<div class="max-w-2xl mx-auto p-6 bg-white rounded shadow">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Registrar Nueva Ausencia</h2>
 
-        <form action="{{ route('absences.store') }}" method="POST">
-            @csrf
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Fecha</label>
-                <input type="date" name="date" class="w-full p-2 border rounded-lg" required>
-            </div>
+    <form action="{{ route('absences.store') }}" method="POST">
+        @csrf
 
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Hora</label>
-                <select name="hour" class="w-full p-2 border rounded-lg" required>
-                    @for ($i = 8; $i <= 19; $i++)
-                        <option value="{{ $i }}:00">{{ $i }}:00</option>
-                    @endfor
-                </select>
-            </div>
+        <!-- Fecha de la ausencia -->
+        <label for="absence_date" class="block text-gray-700 font-medium">Fecha:</label>
+        <input type="date" id="absence_date" name="absence_date" class="p-2 border rounded-md w-full mb-4" required>
 
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Comentario</label>
-                <textarea name="comment" class="w-full p-2 border rounded-lg"></textarea>
-            </div>
+        <!-- Selección de hora -->
+        <label for="weekly_hour" class="block text-gray-700 font-medium">Hora:</label>
+        <select id="weekly_hour" name="weekly_hour" class="p-2 border rounded-md w-full mb-4" required>
+            <!-- Mañana -->
+            <optgroup label="Manana">
+                @foreach ($timeSlots as $slot)
+                    @if (str_contains($slot->value, 'manana'))
+                        <option value="{{ $slot->value }}">{{ $slot->getSchedule() }}</option>
+                    @endif
+                @endforeach
+            </optgroup>
 
-            <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg">Registrar</button>
-        </form>
-    </div>
+            <!-- Tarde -->
+            <optgroup label="Tarde">
+                @foreach ($timeSlots as $slot)
+                    @if (str_contains($slot->value, 'tarde') && !str_contains($slot->value, 'martes'))
+                        <option value="{{ $slot->value }}">{{ $slot->getSchedule() }}</option>
+                    @endif
+                @endforeach
+            </optgroup>
+
+            <!-- Martes por la tarde -->
+            <optgroup label="Martes Tarde">
+                @foreach ($timeSlots as $slot)
+                    @if (str_contains($slot->value, 'martes'))
+                        <option value="{{ $slot->value }}">{{ $slot->getSchedule() }}</option>
+                    @endif
+                @endforeach
+            </optgroup>
+        </select>
+
+        <!-- Comentario -->
+        <label for="comment" class="block text-gray-700 font-medium">Comentario:</label>
+        <textarea id="comment" name="comment" class="p-2 border rounded-md w-full mb-4" rows="3"></textarea>
+
+        <!-- Botón de enviar -->
+        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition">
+            Registrar Ausencia
+        </button>
+    </form>
+</div>
 @endsection
+

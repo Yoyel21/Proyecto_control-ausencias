@@ -19,7 +19,7 @@ class AbsenceController extends Controller
 
         $dailyAbsences = Absence::where('date', $currentDate)
             ->where('hour', $currentHour)
-            ->with('user', 'department')
+            ->with('user')
             ->get();
 
         // Vista Semanal: usamos parámetros 'weekly_date' y 'weekly_hour'
@@ -27,7 +27,7 @@ class AbsenceController extends Controller
         $selectedHour = $request->query('weekly_hour', '1mañana'); // Valor por defecto para la vista semanal
         $weeklyAbsences = Absence::where('date', $selectedDate)
             ->where('hour', $selectedHour)
-            ->with('user', 'department')
+            ->with('user')
             ->get();
 
         $timeSlots = Hour::cases();
@@ -45,12 +45,14 @@ class AbsenceController extends Controller
 
     public function create()
     {
-        return view('absences.create');
+        $timeSlots = Hour::cases();
+        return view('absences.create', compact('timeSlots'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
+            'user_id' => 'required|exists:users,id',
             'date' => 'required|date',
             'hour' => 'required',
             'comment' => 'nullable|string|max:255',
@@ -58,11 +60,11 @@ class AbsenceController extends Controller
 
         Absence::create([
             'user_id' => Auth::id(),
-            'department_id' => Auth::user()->department_id,
             'date' => $data['date'],
             'hour' => $data['hour'],
             'comment' => $data['comment'],
         ]);
+        dd($data);
 
         return redirect()->route('dashboard')->with('success', 'Ausencia registrada con éxito.');
     }
@@ -94,4 +96,10 @@ class AbsenceController extends Controller
 
         return redirect()->route('absences.index')->with('success', 'Ausencia eliminada.');
     }
+
+    public function all()
+{
+    $absences = Absence::with('user')->orderBy('date', 'desc')->get();
+    return view('absences.index', compact('absences'));
+}
 }
