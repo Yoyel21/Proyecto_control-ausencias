@@ -31,19 +31,25 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 // Panel de Administración
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
-    Route::get('/users', [UserController::class, 'index'])->name('users');
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::post('/users/upload-csv', [UserController::class, 'processCsv'])->name('users.processCsv');
+    Route::get('/absences', [AdminAbsenceController::class, 'index'])->name('absences.index');
+    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
 });
+
+// Route::post('/admin/users/store', [UserController::class, 'store'])->name('admin.users.store');
+Route::post('/admin/users/upload-csv', [UserController::class, 'processCsv'])->name('admin.processCsv');
 
 // Rutas de ausencias (Usuarios normales)
 Route::middleware(['auth'])->prefix('absences')->name('absences.')->group(function () {
     Route::get('/', [AbsenceController::class, 'index'])->name('index');
     Route::get('/create', [AbsenceController::class, 'create'])->name('create');
     Route::post('/', [AbsenceController::class, 'store'])->name('store');
+    Route::get('/{absence}/edit', [AbsenceController::class, 'edit'])->name('edit'); 
+    Route::put('/{absence}', [AbsenceController::class, 'update'])->name('update'); 
+    Route::delete('/{absence}', [AbsenceController::class, 'destroy'])->name('destroy');
 });
 
 // Rutas de ausencias (Admin)

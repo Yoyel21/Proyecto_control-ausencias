@@ -9,7 +9,7 @@
             </a>
         </div>
         <!-- Botones para cambiar entre vista diaria y semanal -->
-        <div class="flex justify-center gap-4 mb-6">
+        {{-- <div class="flex justify-center gap-4 mb-6">
             <button x-on:click="view = 'daily'"
                 :class="view === 'daily' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'"
                 class="px-4 py-2 rounded transition duration-300">
@@ -20,7 +20,7 @@
                 class="px-4 py-2 rounded transition duration-300">
                 Vista Semanal
             </button>
-        </div>
+        </div> --}}
 
         <!-- Vista Diaria -->
         <div x-show="view === 'daily'" x-cloak>

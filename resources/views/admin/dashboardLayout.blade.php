@@ -58,9 +58,9 @@
             <aside class="bg-white shadow-md w-full md:w-64 p-4 space-y-4">
                 <a href="{{ route('admin.dashboard') }}"
                     class="block px-4 py-2 text-purple-700 hover:bg-purple-100 rounded">Dashboard</a>
-                <a href="{{ route('admin.users') }}"
+                <a href="{{ route('admin.users.index') }}"
                     class="block px-4 py-2 text-purple-700 hover:bg-purple-100 rounded">Gestión de Usuarios</a>
-                <a href="{{ route('admin.adminAbsences') }}"
+                <a href="{{ route('admin.absences.index') }}"
                     class="block px-4 py-2 text-purple-700 hover:bg-purple-100 rounded">Gestión de Ausencias</a>
             </aside>
             <!-- Panel principal -->

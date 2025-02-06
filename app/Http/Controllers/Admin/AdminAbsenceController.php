@@ -14,7 +14,7 @@ class AdminAbsenceController extends Controller
         // Obtener todas las ausencias con la información de usuario y departamento
         $absences = Absence::with('user', 'department')->orderBy('date', 'desc')->get();
         $users = User::all(); // Obtener todos los usuarios
-        $timeSlots = ['Mañana', 'Tarde', 'Noche']; // Franja horaria (puedes personalizarla según tu sistema)
+        $timeSlots = ['Mañana', 'Tarde', 'Tarde Martes']; // Franja horaria 
 
         return view('admin.absences.index', compact('absences', 'users', 'timeSlots'));
     }
