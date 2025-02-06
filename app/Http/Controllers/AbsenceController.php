@@ -7,6 +7,7 @@ use App\Models\Absence;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Enum;
 
 class AbsenceController extends Controller
 {
@@ -19,12 +20,12 @@ class AbsenceController extends Controller
 
         $dailyAbsences = Absence::where('date', $currentDate)
             ->where('hour', $currentHour)
-            ->with('user')
+            ->with('user.department')
             ->get();
 
         // Vista Semanal: usamos parámetros 'weekly_date' y 'weekly_hour'
         $selectedDate = $request->query('weekly_date', Carbon::now()->toDateString());
-        $selectedHour = $request->query('weekly_hour', '1mañana'); // Valor por defecto para la vista semanal
+        $selectedHour = $request->query('weekly_hour', '1manana'); // Valor por defecto para la vista semanal
         $weeklyAbsences = Absence::where('date', $selectedDate)
             ->where('hour', $selectedHour)
             ->with('user')
@@ -52,19 +53,19 @@ class AbsenceController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required',
             'date' => 'required|date',
-            'hour' => 'required',
+            'hour' => ['required', new Enum(Hour::class)],
             'comment' => 'nullable|string|max:255',
         ]);
 
+
         Absence::create([
-            'user_id' => Auth::id(),
+            'user_id' => $data['user_id'],
             'date' => $data['date'],
             'hour' => $data['hour'],
-            'comment' => $data['comment'],
+            'comment' => $data['comment'] ?? null,
         ]);
-        dd($data);
 
         return redirect()->route('dashboard')->with('success', 'Ausencia registrada con éxito.');
     }
@@ -98,8 +99,8 @@ class AbsenceController extends Controller
     }
 
     public function all()
-{
-    $absences = Absence::with('user')->orderBy('date', 'desc')->get();
-    return view('absences.index', compact('absences'));
-}
+    {
+        $absences = Absence::with('user')->orderBy('date', 'desc')->get();
+        return view('absences.index', compact('absences'));
+    }
 }

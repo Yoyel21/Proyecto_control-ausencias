@@ -17,79 +17,40 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Rutas protegidas para el perfil del usuario
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Ruta para el formulario de subida de CSV.
-Route::get('/admin/upload-users', [UserImportController::class, 'showUploadForm'])->name('admin.upload-users');
-
-// Ruta para procesar el CSV.
-Route::post('/admin/import-users', [UserImportController::class, 'importUsers'])->name('admin.import-users');
-
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/upload-users', [UserImportController::class, 'showUploadForm'])->name('admin.upload-users');
-    Route::post('/admin/import-users', [UserImportController::class, 'importUsers'])->name('admin.import-users');
+// Gestión de usuarios por CSV (solo admin)
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/upload-users', [UserImportController::class, 'showUploadForm'])->name('upload-users');
+    Route::post('/import-users', [UserImportController::class, 'importUsers'])->name('import-users');
 });
 
-// Middleware para restringir acceso solo al admin
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/users', [AdminController::class, 'manageUsers'])->name('admin.users');
-    Route::get('/admin/users/create', [AdminController::class, 'createUser'])->name('admin.users.create');
-    Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
-    Route::get('/admin/upload-csv', [AdminController::class, 'uploadCsv'])->name('admin.uploadCsv');
-    Route::post('/admin/upload-csv', [AdminController::class, 'processCsv'])->name('admin.processCsv');
-});
-
-//Ruta de ausencias.
-Route::get('/absences', [AbsenceController::class, 'index'])->name('absences.index');
-
-//Middleware para proteger las rutas de ausencias.
-Route::middleware(['auth'])->group(function () {
-    Route::get('/absences/create', [AbsenceController::class, 'create'])->name('absences.create');
-    Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store');
-});
-
-//Middleware para las rutas del admin.
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// Panel de Administración
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/users', [UserController::class, 'index'])->name('users');
-    Route::get('/adminAbsences', [AdminAbsenceController::class, 'index'])->name('adminAbsences');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::post('/users/upload-csv', [UserController::class, 'processCsv'])->name('users.processCsv');
 });
 
-Route::post('/admin/users/store', [UserController::class, 'store'])->name('admin.users.store');
-Route::post('/admin/users/upload-csv', [UserController::class, 'processCsv'])->name('admin.processCsv');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/absences', [AbsenceController::class, 'index'])->name('absences.index');
+// Rutas de ausencias (Usuarios normales)
+Route::middleware(['auth'])->prefix('absences')->name('absences.')->group(function () {
+    Route::get('/', [AbsenceController::class, 'index'])->name('index');
+    Route::get('/create', [AbsenceController::class, 'create'])->name('create');
+    Route::post('/', [AbsenceController::class, 'store'])->name('store');
 });
 
-Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store');
-
-Route::get('/absences/create', function () {
-    return view('absences.create');
-})->name('absences.create');
-
-Route::get('/absences/create', [AbsenceController::class, 'create'])->name('absences.create');
-
-Route::get('/ausencias', [AbsenceController::class, 'index'])->name('absences.index');
-
-Route::get('/ausencias', [AbsenceController::class, 'index'])->name('absences.index');
-
-Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store');
-
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/absences', [AbsenceController::class, 'index'])->name('absences.index');
-    Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store');
-});
-
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/absences', [AdminAbsenceController::class, 'index'])->name('absences.index');
-    Route::post('/absences', [AdminAbsenceController::class, 'store'])->name('absences.store');
-    Route::delete('/absences/{absence}', [AdminAbsenceController::class, 'destroy'])->name('absences.destroy');
+// Rutas de ausencias (Admin)
+Route::middleware(['auth', 'admin'])->prefix('admin/absences')->name('admin.absences.')->group(function () {
+    Route::get('/', [AdminAbsenceController::class, 'index'])->name('index');
+    Route::post('/', [AdminAbsenceController::class, 'store'])->name('store');
+    Route::delete('/{absence}', [AdminAbsenceController::class, 'destroy'])->name('destroy');
 });
 
 

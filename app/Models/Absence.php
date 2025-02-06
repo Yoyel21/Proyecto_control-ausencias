@@ -13,7 +13,6 @@ class Absence extends Model
 
     protected $fillable = [
         'user_id',
-        'department_id',
         'date',
         'hour',
         'comment',

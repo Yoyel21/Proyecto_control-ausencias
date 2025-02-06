@@ -44,8 +44,7 @@ class AppServiceProvider extends ServiceProvider
 
             // Obtener las ausencias diarias
             $dailyAbsences = Absence::where('date', $currentDate)
-                ->where('hour', $currentHour)
-                ->with('user', 'department')
+                ->with('user')
                 ->get();
 
             $view->with([
@@ -62,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
 
             $weeklyAbsences = Absence::where('date', $selectedDate)
                 ->where('hour', $selectedHour)
-                ->with('user', 'department')
+                ->with('user')
                 ->get();
 
             $timeSlots = Hour::cases();
