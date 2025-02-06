@@ -29,13 +29,13 @@ return new class extends Migration {
                 '4tarde',
                 '5tarde',
                 '6tarde',
-                '1tardeM',
-                '2tardeM',
-                '3tardeM',
-                'recreoTM',
-                '4tardeM',
-                '5tardeM',
-                '6tardeM'
+                '1martes',
+                '2martes',
+                '3martes',
+                'recreomartes',
+                '4martes',
+                '5martes',
+                '6martes'
             ]);
             $table->text('comment')->nullable();
             $table->timestamps();
