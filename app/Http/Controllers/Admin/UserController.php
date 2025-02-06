@@ -37,7 +37,7 @@ class UserController extends Controller
             'password' => Hash::make('qwerty-1234'), // Contraseña temporal
         ]);
 
-        return redirect()->route('admin.users')->with('success', 'Usuario registrado correctamente.');
+        return redirect()->route('admin.users.index')->with('success', 'Usuario registrado correctamente.');
     }
 
     // Método para procesar un archivo CSV y registrar usuarios en lote
@@ -85,9 +85,9 @@ class UserController extends Controller
         fclose($file);
 
         if (!empty($errores)) {
-            return redirect()->route('admin.users')->withErrors($errores);
+            return redirect()->route('admin.users.index')->withErrors($errores);
         }
 
-        return redirect()->route('admin.users')->with('success', 'Usuarios importados correctamente.');
+        return redirect()->route('admin.users.index')->with('success', 'Usuarios importados correctamente.');
     }
 }
