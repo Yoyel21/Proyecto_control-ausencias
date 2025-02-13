@@ -53,10 +53,11 @@ Route::middleware(['auth'])->prefix('absences')->name('absences.')->group(functi
 });
 
 // Rutas de ausencias (Admin)
-Route::middleware(['auth', 'admin'])->prefix('admin/absences')->name('admin.absences.')->group(function () {
+Route::middleware(['auth'])->prefix('admin/absences')->name('admin.absences.')->group(function () {
     Route::get('/', [AdminAbsenceController::class, 'index'])->name('index');
     Route::post('/', [AdminAbsenceController::class, 'store'])->name('store');
     Route::delete('/{absence}', [AdminAbsenceController::class, 'destroy'])->name('destroy');
+    Route::get('/{absence}/edit', [AdminAbsenceController::class, 'edit'])->name('edit');
 });
 
 

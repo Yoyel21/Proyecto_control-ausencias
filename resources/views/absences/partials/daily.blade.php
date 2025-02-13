@@ -68,7 +68,7 @@
                                                     <select id="hour" name="hour"
                                                         class="p-2 border rounded-md w-full mb-4" required>
                                                         <!-- Mañana -->
-                                                        <optgroup label="Manana">
+                                                        <optgroup label="Mañana">
                                                             @foreach ($timeSlots as $slot)
                                                                 @if (str_contains($slot->value, 'manana'))
                                                                     <option value="{{ $slot->value }}">
